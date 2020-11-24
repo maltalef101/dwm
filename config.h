@@ -266,7 +266,7 @@ static Key keys[] = {
 	{ 0, XF86XK_AudioStop,			spawn,		SHCMD("mpc stop") },
 	{ 0, XF86XK_AudioRewind,		spawn,		SHCMD("mpc seek -10") },
 	{ 0, XF86XK_AudioForward,		spawn,		SHCMD("mpc seek +10") },
-	{ 0, XF86XK_AudioMedia,			spawn,		SHCMD("$TERMINAL -e ncmpcpp") },
+	{ 0, XF86XK_AudioMedia,			spawn,		MUSIC },
 	{ 0, XF86XK_AudioMicMute,		spawn,		SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
 	{ 0, XF86XK_PowerOff,			spawn,		SHCMD("sysact") },
 	{ 0, XF86XK_Calculator,			spawn,		SHCMD("$TERMINAL -e bc -l") },
@@ -275,7 +275,7 @@ static Key keys[] = {
 	{ 0, XF86XK_DOS,				spawn,		SHCMD("$TERMINAL") },
 	{ 0, XF86XK_ScreenSaver,		spawn,		SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") },
 	{ 0, XF86XK_TaskPane,			spawn,		SHCMD("$TERMINAL -e htop") },
-	{ 0, XF86XK_Mail,				spawn,		SHCMD("$TERMINAL -e neomutt ; pkill -RTMIN+12 dwmblocks") },
+	{ 0, XF86XK_Mail,				spawn,		MAIL },
 	{ 0, XF86XK_MyComputer,			spawn,		SHCMD("$TERMINAL -e lf /") },
 	/* { 0, XF86XK_Battery,			spawn,		SHCMD("") }, */
 	{ 0, XF86XK_Launch1,			spawn,		SHCMD("xset dpms force off") },

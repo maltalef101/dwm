@@ -203,7 +203,7 @@ static Key keys[] = {
     { MODKEY|Mod1Mask|ShiftMask,    XK_l,       incrogaps,      {.i = -5} },
     { MODKEY,                       XK_z,       spawn,          SHCMD("zathura") },
     // { MODKEY|ShiftMask,             XK_z,      spawn,          SHCMD("") },
-    { MODKEY,                       XK_x,       spawn,          SHCMD("slock") },
+    { MODKEY,                       XK_x,       spawn,          SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") },
     // { MODKEY|ShiftMask,             XK_x,      spawn,          SHCMD("") },
 	{ MODKEY,                      XK_c,       spawn,          SHCMD("clipmenu") },
 	{ MODKEY|ShiftMask,             XK_c,      spawn,          SHCMD("passmenu") },
@@ -279,7 +279,7 @@ static Key keys[] = {
 	{ 0, XF86XK_MyComputer,			spawn,		SHCMD("$TERMINAL -e lf /") },
 	/* { 0, XF86XK_Battery,			spawn,		SHCMD("") }, */
 	{ 0, XF86XK_Launch1,			spawn,		SHCMD("xset dpms force off") },
-	{ 0, XF86XK_TouchpadToggle,		spawn,		SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") },
+	{ 0, XF86XK_TouchpadToggle,		spawn,		SHCMD("toggletouchpad") },
 	{ 0, XF86XK_TouchpadOff,		spawn,		SHCMD("synclient TouchpadOff=1") },
 	{ 0, XF86XK_TouchpadOn,			spawn,		SHCMD("synclient TouchpadOff=0") },
 	{ 0, XF86XK_MonBrightnessUp,	spawn,		SHCMD("xbacklight -inc 15") },

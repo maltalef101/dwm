@@ -54,14 +54,14 @@ static const Rule rules[] = {
     /* { "spotify-tui",        NULL,             NULL,                             1 << 8,       0,            0,          0,          -1 }, */
     { NULL,                 NULL,             "Event Tester",                   0,            1,            0,          1,          -1 },
     // floating assingments:
-    { "weatherreport",      NULL,             NULL,                             0,            1,            0,          0,          -1 },
-    { "mail",               NULL,             NULL,                             0,            1,            0,          0,          -1 },
-    { "abook",				NULL,             NULL,                             0,            1,            0,          0,          -1 },
+    { "St",					"weatherreport",  NULL,                             0,            1,            0,          0,          -1 },
+    { "St",					"mail",			  NULL,                             0,            1,            0,          0,          -1 },
+    { "St",					"abook",		  NULL,                             0,            1,            0,          0,          -1 },
     { NULL,                 NULL,             "Friends List",                   0,            1,            0,          0,          -1 },
     { NULL,                 NULL,             "Steam - News",                   0,            1,            0,          0,          -1 },
     { NULL,                 NULL,             "Discord Updater",                0,            1,            0,          0,          -1 },
-    { "pulsemixer",         NULL,             NULL,                             0,            1,            0,          0,          -1 },
-    { "music",				NULL,             NULL,                             0,            1,            0,          0,          -1 },
+    { "St",					"pulsemixer",     NULL,                             0,            1,            0,          0,          -1 },
+    { "St",					"music",          NULL,                             0,            1,            0,          0,          -1 },
     { NULL,					NULL,             "cellphone",                      0,            1,            0,          0,          -1 },
 
 };
@@ -100,11 +100,11 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands for opening certain programs */
-#define PULSE SHCMD("st -c pulsemixer -g =110x27+56+64 -e pulsemixer")
-#define WEATH SHCMD("st -c weatherreport -g =130x41+56+64 -e less -S .local/share/weatherreport")
-#define MAIL SHCMD("st -c mail -g =207x54+135-68 -e neomutt; pkill -RTMIN+2 dwmblocks; rmdir ~/.abook")
-#define ABOOK SHCMD("st -c abook -g '=207x54+135-68' -e abook -C ~/.config/abook/abookrc --datafile ~/.config/abook/addressbook; rmdir ~/.abook")
-#define MUSIC SHCMD("st -c 'pulsemixer' -g '=176x46+242+132' -e ncmpcpp")
+#define PULSE SHCMD("st -n pulsemixer -g =110x27+56+64 -e pulsemixer")
+#define WEATH SHCMD("st -n weatherreport -g =130x41+56+64 -e less -S .local/share/weatherreport")
+#define MAIL SHCMD("st -n mail -g =207x54+135-68 -e neomutt; pkill -RTMIN+2 dwmblocks; rmdir ~/.abook")
+#define ABOOK SHCMD("st -n abook -g '=207x54+135-68' -e abook -C ~/.config/abook/abookrc --datafile ~/.config/abook/addressbook; rmdir ~/.abook")
+#define MUSIC SHCMD("st -c 'music' -g '=176x46+242+132' -e ncmpcpp")
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */

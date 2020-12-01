@@ -104,7 +104,7 @@ static const Layout layouts[] = {
 #define WEATH SHCMD("st -n weatherreport -g =130x41+56+64 -e less -S .local/share/weatherreport")
 #define MAIL SHCMD("st -n mail -g =207x54+135-68 -e neomutt; pkill -RTMIN+2 dwmblocks; rmdir ~/.abook")
 #define ABOOK SHCMD("st -n abook -g '=207x54+135-68' -e abook -C ~/.config/abook/abookrc --datafile ~/.local/share/abook/addressbook; rmdir ~/.abook")
-#define MUSIC SHCMD("st -n 'music' -g '=176x46+242+132' -e ncmpcpp")
+#define MUSIC SHCMD("st -n music -g '=176x46+242+132' -e ncmpcpp")
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */

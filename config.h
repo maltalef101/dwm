@@ -168,7 +168,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,       setlayout,      {.v = &layouts[0]} },
     { MODKEY|ShiftMask,             XK_t,       setlayout,      {.v = &layouts[3]} },
     { MODKEY,                       XK_y,       spawn,          SHCMD("discord") },
-    { MODKEY|ShiftMask,              XK_y,       spawn,          SHCMD("st -e weechat") },
+    { MODKEY|ShiftMask,             XK_y,       spawn,          SHCMD("telegram-desktop") },
 	// { MODKEY,                       XK_u,      spawn,          SHCMD("") },
     // { MODKEY|ShiftMask,             XK_u,      spawn,          SHCMD("") },
     { MODKEY,                       XK_i,       spawn,          SHCMD("st -e htop") },

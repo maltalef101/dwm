@@ -1,20 +1,20 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static unsigned int borderpx        = 5;        /* border pixel of windows */
-static unsigned int snap            = 32;       /* snap pixel */
-static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayspacing = 2;   /* systray spacing */
-static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-static const int showsystray        = 1;     /* 0 means no systray */
-static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
-static const unsigned int gappih    = 15;        /* horiz inner gap between windows */
-static const unsigned int gappiv    = 15;        /* vert inner gap between windows */
-static const unsigned int gappoh    = 15;        /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 15;        /* vert outer gap between windows and screen edge */
-static const int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
-static int showbar                  = 1;        /* 0 means no bar */
-static int topbar                   = 1;        /* 0 means bottom bar */
+static unsigned int borderpx        = 5;			/* border pixel of windows */
+static unsigned int snap				= 32;       	/* snap pixel */
+static const unsigned int systraypinning = 0;   	/* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
+static const unsigned int systrayspacing = 2;   	/* systray spacing */
+static const int systraypinningfailfirst = 1;   	/* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
+static const int showsystray        = 1;			/* 0 means no systray */
+static const int swallowfloating    = 0;			/* 1 means swallow floating windows by default */
+static const unsigned int gappih    = 15;			/* horiz inner gap between windows */
+static const unsigned int gappiv    = 15;        	/* vert inner gap between windows */
+static const unsigned int gappoh    = 15;        	/* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 15;        	/* vert outer gap between windows and screen edge */
+static const int smartgaps          = 1;			/* 1 means no outer gap when there is only one window */
+static int showbar                  = 1;        	/* 0 means no bar */
+static int topbar                   = 1;        	/* 0 means bottom bar */
 static const char *fonts[]          = { "Deja Vu Sans Mono:size=10", "JoyPixels:pixelsize=12:antialias=true:autohint=true" };
 static const char dmenufont[]       = "Deja Vu Sans Mono:size=10";
 #define BLACK "#1d2021"
@@ -54,12 +54,15 @@ static const Rule rules[] = {
     /* { "spotify-tui",        NULL,             NULL,                             1 << 8,       0,            0,          0,          -1 }, */
     { NULL,                 NULL,             "Event Tester",                   0,            1,            0,          1,          -1 },
     // floating assingments:
-    { "weatherreport",      NULL,             NULL,                             0,            1,            0,          0,          -1 },
-    { "mail",               NULL,             NULL,                             0,            1,            0,          0,          -1 },
+    { "St",					"weatherreport",  NULL,                             0,            1,            0,          0,          -1 },
+    { "St",					"mail",			  NULL,                             0,            1,            0,          0,          -1 },
+    { "St",					"abook",		  NULL,                             0,            1,            0,          0,          -1 },
     { NULL,                 NULL,             "Friends List",                   0,            1,            0,          0,          -1 },
     { NULL,                 NULL,             "Steam - News",                   0,            1,            0,          0,          -1 },
     { NULL,                 NULL,             "Discord Updater",                0,            1,            0,          0,          -1 },
-    { "pulsemixer",         NULL,             NULL,                             0,            1,            0,          0,          -1 },
+    { "St",					"pulsemixer",     NULL,                             0,            1,            0,          0,          -1 },
+    { "St",					"music",          NULL,                             0,            1,            0,          0,          -1 },
+    { NULL,					NULL,             "cellphone",                      0,            1,            0,          0,          -1 },
 
 };
 
@@ -97,10 +100,11 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands for opening certain programs */
-#define PULSE SHCMD("st -c pulsemixer -g =110x27+56+64 -e pulsemixer")
-#define WEATH SHCMD("st -c weatherreport -g =130x41+56+64 -e less -S .local/share/weatherreport")
-#define MAIL SHCMD("st -c mail -g =207x54+135-68 -e neomutt; pkill -RTMIN+2 dwmblocks; rmdir ~/.abook")
-#define ABOOK SHCMD("st -e abook -C ~/.config/abook/abookrc --datafile ~/.config/abook/addressbook; rmdir ~/.abook")
+#define PULSE SHCMD("st -n pulsemixer -g =110x27+56+64 -e pulsemixer")
+#define WEATH SHCMD("st -n weatherreport -g =130x41+56+64 -e less -S .local/share/weatherreport")
+#define MAIL SHCMD("st -n mail -g =207x54+135-68 -e neomutt; pkill -RTMIN+2 dwmblocks; rmdir ~/.abook")
+#define ABOOK SHCMD("st -n abook -g '=207x54+135-68' -e abook -C ~/.config/abook/abookrc --datafile ~/.local/share/abook/addressbook; rmdir ~/.abook")
+#define MUSIC SHCMD("st -n music -g '=176x46+242+132' -e ncmpcpp")
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -130,28 +134,41 @@ ResourcePref resources[] = {
 	{ "mfact",      	 	FLOAT,   &mfact },
 };
 
+#include <X11/XF86keysym.h>
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-
-    // #---# basic bindings #---#
 	{ MODKEY,                       XK_Return,  spawn,          {.v = termcmd } },
     { MODKEY|ShiftMask,             XK_Return,  zoom,           {0} },
 	{ MODKEY,                       XK_space,   setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,   togglefloating, {0} },
 
-  // #---# letterkey bindings #---#
-	{ MODKEY,                       XK_q,       killclient,     {0} },
+    { MODKEY,						XK_masculine,	spawn,      SHCMD("dmenuunicode") },
+	TAGKEYS(                        XK_1,                      0)
+	TAGKEYS(                        XK_2,                      1)
+	TAGKEYS(                        XK_3,                      2)
+	TAGKEYS(                        XK_4,                      3)
+	TAGKEYS(                        XK_5,                      4)
+	TAGKEYS(                        XK_6,                      5)
+	TAGKEYS(                        XK_7,                      6)
+	TAGKEYS(                        XK_8,                      7)
+	TAGKEYS(                        XK_9,                      8)
+	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+    { MODKEY|ShiftMask,             XK_BackSpace,	quit,         {0} },
+
+	{ MODKEY,                       XK_Tab,    view,           {0} },
+	{ MODKEY,                       XK_q,			killclient,     {0} },
     // { MODKEY|ShiftMask,             XK_q,      spawn,           SHCMD("") },
     { MODKEY,                       XK_w,       spawn,          SHCMD("$BROWSER") },
     { MODKEY|ShiftMask,             XK_w,       spawn,          WEATH },
-    { MODKEY,                       XK_e,       spawn,          SHCMD("dmenuunicode") },
+	// { MODKEY,                       XK_e,       spawn,          SHCMD("") },
     // { MODKEY|ShiftMask,             XK_e,      spawn,          SHCMD("") },
     { MODKEY,                       XK_r,      spawn,           SHCMD("st -e lf") },
     // { MODKEY|ShiftMask,             XK_r,      spawn,          SHCMD("") },
 	{ MODKEY,                       XK_t,       setlayout,      {.v = &layouts[0]} },
     { MODKEY|ShiftMask,             XK_t,       setlayout,      {.v = &layouts[3]} },
     { MODKEY,                       XK_y,       spawn,          SHCMD("discord") },
-    { MODKEY|ShiftMask,              XK_y,       spawn,          SHCMD("st -e irssi") },
+    { MODKEY|ShiftMask,             XK_y,       spawn,          SHCMD("telegram-desktop") },
 	// { MODKEY,                       XK_u,      spawn,          SHCMD("") },
     // { MODKEY|ShiftMask,             XK_u,      spawn,          SHCMD("") },
     { MODKEY,                       XK_i,       spawn,          SHCMD("st -e htop") },
@@ -160,7 +177,7 @@ static Key keys[] = {
   // { MODKEY|ShiftMask,             XK_o,      spawn,          SHCMD("") },
 	// { MODKEY,                       XK_u,      spawn,          SHCMD("") },
   // { MODKEY|ShiftMask,             XK_u,      spawn,          SHCMD("") },
-    { MODKEY,                       XK_p,       spawn,          SHCMD("playerctl --player=$PLAYER play-pause; sptup") },
+    { MODKEY,                       XK_p,       spawn,          SHCMD("mpc toggle") },
     { MODKEY|ShiftMask,             XK_p,       spawn,          SHCMD("$PLAYER") },
 	// { MODKEY,                       XK_a,      spawn,          SHCMD("") },
   // { MODKEY|ShiftMask,             XK_a,      spawn,          SHCMD("") },
@@ -186,32 +203,47 @@ static Key keys[] = {
     { MODKEY|Mod1Mask|ShiftMask,    XK_l,       incrogaps,      {.i = -5} },
     { MODKEY,                       XK_z,       spawn,          SHCMD("zathura") },
     // { MODKEY|ShiftMask,             XK_z,      spawn,          SHCMD("") },
-    { MODKEY,                       XK_x,       spawn,          SHCMD("slock") },
+    { MODKEY,                       XK_x,       spawn,          SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") },
     // { MODKEY|ShiftMask,             XK_x,      spawn,          SHCMD("") },
-	{ MODKEY,                      XK_c,       spawn,          SHCMD("passmenu") },
-    // { MODKEY|ShiftMask,             XK_c,      spawn,          SHCMD("") },
+	{ MODKEY,                      XK_c,       spawn,          SHCMD("clipmenu") },
+	{ MODKEY|ShiftMask,             XK_c,      spawn,          SHCMD("passmenu") },
 	{ MODKEY,                       XK_v,      spawn,           PULSE },
-    /* { MODKEY|ShiftMask,             XK_v,       spawn,          SHCMD("") }, */
+	// { MODKEY|ShiftMask,             XK_v,       spawn,          SHCMD("") },
 	{ MODKEY,                       XK_b,       togglebar,      {0} },
     // { MODKEY|ShiftMask,             XK_b,      spawn,          SHCMD("") },
-	// { MODKEY,                       XK_n,      spawn,          SHCMD("") },
+	{ MODKEY,                       XK_n,      spawn,          MUSIC },
     // { MODKEY|ShiftMask,             XK_n,      spawn,          SHCMD("") },
 	{ MODKEY,                       XK_m,       spawn,          MAIL },
     { MODKEY|ShiftMask,             XK_m,       spawn,          ABOOK },
-
-    /* #---# non-letter keys bindings #---# */
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-    // { MODKEY|ShiftMask,             XK_Tab,      spawn,          SHCMD("") },
-	{ MODKEY,                       XK_comma,  spawn,           SHCMD("playerctl --player=$PLAYER previous; sptup") },
-    // { MODKEY|ShiftMask,             XK_comma,  spawn,         SHCMD("") },
-	{ MODKEY,                       XK_period, spawn,           SHCMD("playerctl --player=$PLAYER next; sptup") },
-	// { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ 0,                            XK_Print,   spawn,          SHCMD("maimsel") },
-	{ ShiftMask,                    XK_Print,   spawn,          SHCMD("maimfull") },
+	{ MODKEY,						XK_comma,	spawn,		SHCMD("mpc seek 0%") },
+	{ MODKEY|ShiftMask,				XK_comma,	spawn,		SHCMD("mpc prev") },
+	{ MODKEY,						XK_period,	spawn,		SHCMD("mpc next") },
+	{ MODKEY|ShiftMask,				XK_period,	spawn,		SHCMD("mpc repeat") },
+	// { MODKEY,						XK_minus,	spawn,		SHCMD("") },
+	// { MODKEY|ShiftMask,				XK_minus,	spawn,		SHCMD("") },
 
 
-    /* #---# function keys bindings #---# */
-    /* { MODKEY,			            XK_F1,		spawn,		SHCMD("") }, */
+	{ 0,                            XK_Print,		spawn,      SHCMD("maimsel") },
+	{ ShiftMask,                    XK_Print,   	spawn,      SHCMD("maimfull") },
+	// { MODKEY,						XK_Scroll_Lock,	spawn,		SHCMD("") },
+	// { MODKEY|ShiftMask,				XK_Scroll_Lock,	spawn,		SHCMD("") },
+	// { MODKEY,						XK_Pause,		spawn,		SHCMD("") },
+	// { MODKEY|ShiftMask,				XK_Pause,		spawn,		SHCMD("") },
+	// { MODKEY,						XK_Insert,		spawn,		SHCMD("") },
+	// { MODKEY|ShiftMask,				XK_Insert,		spawn,		SHCMD("") },
+	// { MODKEY,						XK_Home,		spawn,		SHCMD("") },
+	// { MODKEY|ShiftMask,				XK_Home,		spawn,		SHCMD("") },
+	// { MODKEY,						XK_Prior,		spawn,		SHCMD("") },
+	// { MODKEY|ShiftMask,				XK_Prior,		spawn,		SHCMD("") },
+	{ MODKEY,						XK_Delete,		spawn,		SHCMD("sysact") },
+	{ MODKEY|ShiftMask,				XK_Delete,		spawn,		SHCMD("sudo shutdown now") },
+	{ MODKEY|Mod1Mask,				XK_Delete,		spawn,		SHCMD("reboot") },
+	// { MODKEY,						XK_End,			spawn,		SHCMD("") },
+	// { MODKEY|ShiftMask,				XK_End,			spawn,		SHCMD("") },
+	// { MODKEY,						XK_Next,		spawn,		SHCMD("") },
+	// { MODKEY|ShiftMask,				XK_Next,		spawn,		SHCMD("") },
+
+	// { MODKEY,						XK_F1,			spawn,		SHCMD("") },
 	/* { MODKEY,			            XK_F2,		spawn,		SHCMD("") }, */
 	/* { MODKEY,			            XK_F3,		spawn,		SHCMD("") }, */
 	/* { MODKEY,			            XK_F4,		spawn,		SHCMD("") }, */
@@ -219,24 +251,41 @@ static Key keys[] = {
 	/* { MODKEY,			            XK_F6,		spawn,		SHCMD("") }, */
 	/* { MODKEY,			            XK_F7,		spawn,		SHCMD("") }, */
 	{ MODKEY,			            XK_F8,		spawn,		SHCMD("mailsync") },
-	/* { MODKEY,			            XK_F9,		spawn,		SHCMD("") }, */
-	/* { MODKEY,			            XK_F10,		spawn,		SHCMD("") }, */
-	/* { MODKEY,			            XK_F11,		spawn,		SHCMD("") }, */
+	{ MODKEY,			            XK_F9,		spawn,		SHCMD("dmenumount") },
+	{ MODKEY,			            XK_F10,		spawn,		SHCMD("dmenuumount") },
+	{ MODKEY,			            XK_F11,			spawn,		SHCMD("togglenotify") },
 	{ MODKEY,			            XK_F12,		spawn,		SHCMD("st -e nmtui") },
 
-  // #---# tag bindings #---#
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
-    { MODKEY|ShiftMask,             XK_BackSpace, quit,         {0} },
+	{ 0, XF86XK_AudioMute,			spawn,		SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioPrev,			spawn,		SHCMD("mpc prev") },
+	{ 0, XF86XK_AudioNext,			spawn,		SHCMD("mpc next") },
+	{ 0, XF86XK_AudioPause,			spawn,		SHCMD("mpc pause") },
+	{ 0, XF86XK_AudioPlay,			spawn,		SHCMD("mpc play") },
+	{ 0, XF86XK_AudioStop,			spawn,		SHCMD("mpc stop") },
+	{ 0, XF86XK_AudioRewind,		spawn,		SHCMD("mpc seek -10") },
+	{ 0, XF86XK_AudioForward,		spawn,		SHCMD("mpc seek +10") },
+	{ 0, XF86XK_AudioMedia,			spawn,		MUSIC },
+	{ 0, XF86XK_AudioMicMute,		spawn,		SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
+	{ 0, XF86XK_PowerOff,			spawn,		SHCMD("sysact") },
+	{ 0, XF86XK_Calculator,			spawn,		SHCMD("$TERMINAL -e bc -l") },
+	{ 0, XF86XK_Sleep,				spawn,		SHCMD("sudo -A systemctl suspend-then-hibernate") },
+	{ 0, XF86XK_WWW,				spawn,		SHCMD("$BROWSER") },
+	{ 0, XF86XK_DOS,				spawn,		SHCMD("$TERMINAL") },
+	{ 0, XF86XK_ScreenSaver,		spawn,		SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") },
+	{ 0, XF86XK_TaskPane,			spawn,		SHCMD("$TERMINAL -e htop") },
+	{ 0, XF86XK_Mail,				spawn,		MAIL },
+	{ 0, XF86XK_MyComputer,			spawn,		SHCMD("$TERMINAL -e lf /") },
+	/* { 0, XF86XK_Battery,			spawn,		SHCMD("") }, */
+	{ 0, XF86XK_Launch1,			spawn,		SHCMD("xset dpms force off") },
+	{ 0, XF86XK_TouchpadToggle,		spawn,		SHCMD("toggletouchpad") },
+	{ 0, XF86XK_TouchpadOff,		spawn,		SHCMD("synclient TouchpadOff=1") },
+	{ 0, XF86XK_TouchpadOn,			spawn,		SHCMD("synclient TouchpadOff=0") },
+	{ 0, XF86XK_MonBrightnessUp,	spawn,		SHCMD("xbacklight -inc 15") },
+	{ 0, XF86XK_MonBrightnessDown,	spawn,		SHCMD("xbacklight -dec 15") },
+
+
 };
 
 /* button definitions */
@@ -247,17 +296,6 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button2,        setlayout,             {.v = &layouts[1]} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,             {.v = &layouts[3]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,                  {0} },
-
-    // clickable statusbar modules are available if you uncomment this line below and
-    // use the proper patches on dwmblocks. i had too much of signals not working.
-    // not being maintained anymore.
-    /* { ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} }, */
-	/* { ClkStatusText,        0,              Button2,        sigdwmblocks,   {.i = 1} }, */
-	/* { ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} }, */
-	/* { ClkStatusText,        0,              Button4,        sigdwmblocks,   {.i = 4} }, */
-	/* { ClkStatusText,        0,              Button5,        sigdwmblocks,   {.i = 5} }, */
-	/* { ClkStatusText,        ShiftMask,      Button1,        sigdwmblocks,   {.i = 6} }, */
-
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,             {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating,        {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,           {0} },

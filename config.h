@@ -47,6 +47,7 @@ static const Rule rules[] = {
     { "Brave-browser",      NULL,             NULL,                             1,            0,            0,          0,          -1 },
     { "St",                 "initterm",       NULL,                             1 << 1,       0,            1,          0,          -1 },
     { "St",                 NULL,             NULL,                             0,            0,            1,          0,          -1 },
+    { "kitty",              NULL,             NULL,                             0,            0,            1,          0,          -1 },
     { "St",                 "irssi",          NULL,                             1 << 2,       0,            1,          0,          -1 },
     { "discord",            NULL,             NULL,                             1 << 2,       0,            0,          0,          -1 },
     { "zoom",               NULL,             NULL,                             1 << 6,       0,            0,          0,          -1 },
@@ -111,9 +112,11 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 // center dmenu command (comment top one, uncomment bottom one)
 // static const char *dmenucmd[] = { "dmenu_run", "-c", "-l", "15", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "st", NULL };
+// static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "kitty", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL};
+// static const char *scratchpadcmd[] = { "kitty", "-T", scratchpadname, "-g", "120x34", NULL};
 
 /*
  * Xresources preferences to load at startup
@@ -178,7 +181,7 @@ static Key keys[] = {
 	// { MODKEY,                       XK_u,      spawn,          SHCMD("") },
   // { MODKEY|ShiftMask,             XK_u,      spawn,          SHCMD("") },
     { MODKEY,                       XK_p,       spawn,          SHCMD("mpc toggle") },
-    { MODKEY|ShiftMask,             XK_p,       spawn,          SHCMD("$PLAYER") },
+	// { MODKEY|ShiftMask,             XK_p,       spawn,          SHCMD("$PLAYER") },
 	// { MODKEY,                       XK_a,      spawn,          SHCMD("") },
   // { MODKEY|ShiftMask,             XK_a,      spawn,          SHCMD("") },
     { MODKEY,                       XK_s,       togglesticky,   {0} },
@@ -236,8 +239,8 @@ static Key keys[] = {
 	// { MODKEY,						XK_Prior,		spawn,		SHCMD("") },
 	// { MODKEY|ShiftMask,				XK_Prior,		spawn,		SHCMD("") },
 	{ MODKEY,						XK_Delete,		spawn,		SHCMD("sysact") },
-	{ MODKEY|ShiftMask,				XK_Delete,		spawn,		SHCMD("sudo shutdown now") },
-	{ MODKEY|Mod1Mask,				XK_Delete,		spawn,		SHCMD("reboot") },
+	{ MODKEY|ShiftMask,				XK_Delete,		spawn,		SHCMD("sysact shutdown") },
+	{ MODKEY|Mod1Mask,				XK_Delete,		spawn,		SHCMD("sysact reboot") },
 	// { MODKEY,						XK_End,			spawn,		SHCMD("") },
 	// { MODKEY|ShiftMask,				XK_End,			spawn,		SHCMD("") },
 	// { MODKEY,						XK_Next,		spawn,		SHCMD("") },
@@ -253,7 +256,7 @@ static Key keys[] = {
 	{ MODKEY,			            XK_F8,		spawn,		SHCMD("mailsync") },
 	{ MODKEY,			            XK_F9,		spawn,		SHCMD("dmenumount") },
 	{ MODKEY,			            XK_F10,		spawn,		SHCMD("dmenuumount") },
-	{ MODKEY,			            XK_F11,			spawn,		SHCMD("togglenotify") },
+	{ MODKEY,			            XK_F11,		spawn,		SHCMD("togglenotify") },
 	{ MODKEY,			            XK_F12,		spawn,		SHCMD("st -e nmtui") },
 
 	{ 0, XF86XK_AudioMute,			spawn,		SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },

@@ -47,7 +47,6 @@ static const Rule rules[] = {
     { "Brave-browser",      NULL,             NULL,                             1,            0,            0,          0,          -1 },
     { "St",                 "initterm",       NULL,                             1 << 1,       0,            1,          0,          -1 },
     { "St",                 NULL,             NULL,                             0,            0,            1,          0,          -1 },
-    { "kitty",              NULL,             NULL,                             0,            0,            1,          0,          -1 },
     { "St",                 "irssi",          NULL,                             1 << 2,       0,            1,          0,          -1 },
     { "discord",            NULL,             NULL,                             1 << 2,       0,            0,          0,          -1 },
     { "zoom",               NULL,             NULL,                             1 << 6,       0,            0,          0,          -1 },
@@ -112,11 +111,9 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 // center dmenu command (comment top one, uncomment bottom one)
 // static const char *dmenucmd[] = { "dmenu_run", "-c", "-l", "15", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-// static const char *termcmd[]  = { "st", NULL };
-static const char *termcmd[]  = { "kitty", NULL };
+static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL};
-// static const char *scratchpadcmd[] = { "kitty", "-T", scratchpadname, "-g", "120x34", NULL};
 
 /*
  * Xresources preferences to load at startup
@@ -138,6 +135,7 @@ ResourcePref resources[] = {
 };
 
 #include <X11/XF86keysym.h>
+#include "selfrestart.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_Return,  spawn,          {.v = termcmd } },
@@ -157,7 +155,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-    { MODKEY|ShiftMask,             XK_BackSpace,	quit,         {0} },
+    // { MODKEY|ShiftMask,             XK_BackSpace,	quit,         {0} },
+	{ MODKEY|ShiftMask,             XK_BackSpace,	self_restart,         {0} },
 
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,			killclient,     {0} },
@@ -181,7 +180,7 @@ static Key keys[] = {
 	// { MODKEY,                       XK_u,      spawn,          SHCMD("") },
   // { MODKEY|ShiftMask,             XK_u,      spawn,          SHCMD("") },
     { MODKEY,                       XK_p,       spawn,          SHCMD("mpc toggle") },
-	// { MODKEY|ShiftMask,             XK_p,       spawn,          SHCMD("$PLAYER") },
+    // { MODKEY|ShiftMask,             XK_p,       spawn,          SHCMD("$PLAYER") },
 	// { MODKEY,                       XK_a,      spawn,          SHCMD("") },
   // { MODKEY|ShiftMask,             XK_a,      spawn,          SHCMD("") },
     { MODKEY,                       XK_s,       togglesticky,   {0} },
@@ -307,4 +306,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,                   {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,             {0} },
 };
-

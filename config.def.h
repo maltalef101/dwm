@@ -135,6 +135,7 @@ ResourcePref resources[] = {
 };
 
 #include <X11/XF86keysym.h>
+#include "selfrestart.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_Return,  spawn,          {.v = termcmd } },
@@ -154,7 +155,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-    { MODKEY|ShiftMask,             XK_BackSpace,	quit,         {0} },
+    // { MODKEY|ShiftMask,             XK_BackSpace,	quit,         {0} },
+	{ MODKEY|ShiftMask,             XK_BackSpace,	self_restart,         {0} },
 
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,			killclient,     {0} },
@@ -178,7 +180,7 @@ static Key keys[] = {
 	// { MODKEY,                       XK_u,      spawn,          SHCMD("") },
   // { MODKEY|ShiftMask,             XK_u,      spawn,          SHCMD("") },
     { MODKEY,                       XK_p,       spawn,          SHCMD("mpc toggle") },
-    { MODKEY|ShiftMask,             XK_p,       spawn,          SHCMD("$PLAYER") },
+    // { MODKEY|ShiftMask,             XK_p,       spawn,          SHCMD("$PLAYER") },
 	// { MODKEY,                       XK_a,      spawn,          SHCMD("") },
   // { MODKEY|ShiftMask,             XK_a,      spawn,          SHCMD("") },
     { MODKEY,                       XK_s,       togglesticky,   {0} },
@@ -236,8 +238,8 @@ static Key keys[] = {
 	// { MODKEY,						XK_Prior,		spawn,		SHCMD("") },
 	// { MODKEY|ShiftMask,				XK_Prior,		spawn,		SHCMD("") },
 	{ MODKEY,						XK_Delete,		spawn,		SHCMD("sysact") },
-	{ MODKEY|ShiftMask,				XK_Delete,		spawn,		SHCMD("sudo shutdown now") },
-	{ MODKEY|Mod1Mask,				XK_Delete,		spawn,		SHCMD("reboot") },
+	{ MODKEY|ShiftMask,				XK_Delete,		spawn,		SHCMD("sysact shutdown") },
+	{ MODKEY|Mod1Mask,				XK_Delete,		spawn,		SHCMD("sysact reboot") },
 	// { MODKEY,						XK_End,			spawn,		SHCMD("") },
 	// { MODKEY|ShiftMask,				XK_End,			spawn,		SHCMD("") },
 	// { MODKEY,						XK_Next,		spawn,		SHCMD("") },
@@ -253,7 +255,7 @@ static Key keys[] = {
 	{ MODKEY,			            XK_F8,		spawn,		SHCMD("mailsync") },
 	{ MODKEY,			            XK_F9,		spawn,		SHCMD("dmenumount") },
 	{ MODKEY,			            XK_F10,		spawn,		SHCMD("dmenuumount") },
-	{ MODKEY,			            XK_F11,			spawn,		SHCMD("togglenotify") },
+	{ MODKEY,			            XK_F11,		spawn,		SHCMD("togglenotify") },
 	{ MODKEY,			            XK_F12,		spawn,		SHCMD("st -e nmtui") },
 
 	{ 0, XF86XK_AudioMute,			spawn,		SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
@@ -304,4 +306,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,                   {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,             {0} },
 };
-

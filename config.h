@@ -51,6 +51,7 @@ static const Rule rules[] = {
     { "discord",            NULL,             NULL,                             1 << 2,       0,            0,          0,          -1 },
     { "zoom",               NULL,             NULL,                             1 << 6,       0,            0,          0,          -1 },
     { "Steam",              NULL,             NULL,                             1 << 7,       0,            0,          0,          -1 },
+    { "minecraft-launcher", NULL,             NULL,                             1 << 7,       0,            0,          0,          -1 },
     /* { "spotify-tui",        NULL,             NULL,                             1 << 8,       0,            0,          0,          -1 }, */
     { NULL,                 NULL,             "Event Tester",                   0,            1,            0,          1,          -1 },
     // floating assingments:
@@ -74,10 +75,6 @@ static int resizehints = 1;    /* 1 means respect size hints in tiled resizals *
 static const Layout layouts[] = {
     /* symbol     arrange function */
     { "[]=",      tile },    /* first entry is default */
-    { "><>",      NULL },    /* no layout function means floating behavior */
-    { "[M]",      monocle },
-    { "|M|",      centeredmaster },
-    { ">M>",      centeredfloatingmaster },
 };
 
 /* key definitions */
@@ -140,7 +137,6 @@ static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_Return,  spawn,          {.v = termcmd } },
     { MODKEY|ShiftMask,             XK_Return,  zoom,           {0} },
-	{ MODKEY,                       XK_space,   setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,   togglefloating, {0} },
 
     { MODKEY,						XK_masculine,	spawn,      SHCMD("dmenuunicode") },
@@ -165,12 +161,12 @@ static Key keys[] = {
     { MODKEY|ShiftMask,             XK_w,       spawn,          WEATH },
 	// { MODKEY,                       XK_e,       spawn,          SHCMD("") },
     // { MODKEY|ShiftMask,             XK_e,      spawn,          SHCMD("") },
-    { MODKEY,                       XK_r,      spawn,           SHCMD("st -e lf") },
+    { MODKEY,                       XK_r,		spawn,          SHCMD("st -e lf") },
     // { MODKEY|ShiftMask,             XK_r,      spawn,          SHCMD("") },
-	{ MODKEY,                       XK_t,       setlayout,      {.v = &layouts[0]} },
-    { MODKEY|ShiftMask,             XK_t,       setlayout,      {.v = &layouts[3]} },
-    { MODKEY,                       XK_y,       spawn,          SHCMD("discord") },
-    { MODKEY|ShiftMask,             XK_y,       spawn,          SHCMD("telegram-desktop") },
+	// { MODKEY,                       XK_t,       spawn,			SHCMD("") },
+    // { MODKEY|ShiftMask,             XK_t,       spawn,      	SHCMD("") },
+    { MODKEY,                       XK_y,       spawn,          SHCMD("telegram-desktop") },
+    { MODKEY|ShiftMask,             XK_y,       spawn,          SHCMD("discord") },
 	// { MODKEY,                       XK_u,      spawn,          SHCMD("") },
     // { MODKEY|ShiftMask,             XK_u,      spawn,          SHCMD("") },
     { MODKEY,                       XK_i,       spawn,          SHCMD("st -e htop") },
@@ -189,7 +185,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_d,       spawn,          {.v = dmenucmd } },
     /* { MODKEY|ShiftMask,             XK_d,       spawn,          SHCMD("") }, */
     { MODKEY,                       XK_f,       togglefullscr,  {0} },
-    { MODKEY|ShiftMask,             XK_f,       setlayout,      {.v = &layouts[1]} },
+    // { MODKEY|ShiftMask,             XK_f,       spawn,			SHCMD("") },
     { MODKEY,                       XK_g,       togglescratch,  {.v = scratchpadcmd } },
     // { MODKEY|ShiftMask,             XK_g,      spawn,          SHCMD("") },
 	{ MODKEY,                       XK_h,       setmfact,       {.f = -0.05} },
@@ -224,7 +220,6 @@ static Key keys[] = {
 	// { MODKEY,						XK_minus,	spawn,		SHCMD("") },
 	// { MODKEY|ShiftMask,				XK_minus,	spawn,		SHCMD("") },
 
-
 	{ 0,                            XK_Print,		spawn,      SHCMD("maimsel") },
 	{ ShiftMask,                    XK_Print,   	spawn,      SHCMD("maimfull") },
 	// { MODKEY,						XK_Scroll_Lock,	spawn,		SHCMD("") },
@@ -244,6 +239,11 @@ static Key keys[] = {
 	// { MODKEY|ShiftMask,				XK_End,			spawn,		SHCMD("") },
 	// { MODKEY,						XK_Next,		spawn,		SHCMD("") },
 	// { MODKEY|ShiftMask,				XK_Next,		spawn,		SHCMD("") },
+
+	{ MODKEY,						XK_Left,	focusmon,	{.i = -1 } },
+	{ MODKEY|ShiftMask,				XK_Left,	tagmon,		{.i = -1 } },
+	{ MODKEY,						XK_Right,	focusmon,	{.i = +1 } },
+	{ MODKEY|ShiftMask,				XK_Right,	tagmon,		{.i = +1 } },
 
 	// { MODKEY,						XK_F1,			spawn,		SHCMD("") },
 	/* { MODKEY,			            XK_F2,		spawn,		SHCMD("") }, */
@@ -294,9 +294,6 @@ static Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function               argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,             {0} },
-	{ ClkLtSymbol,          0,              Button2,        setlayout,             {.v = &layouts[1]} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,             {.v = &layouts[3]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,                  {0} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,             {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating,        {0} },

@@ -64,6 +64,7 @@ static const Rule rules[] = {
     { "St",					"pulsemixer",     NULL,                             0,            1,            0,          0,          -1 },
     { "St",					"music",          NULL,                             0,            1,            0,          0,          -1 },
     { NULL,					NULL,             "cellphone",                      0,            1,            0,          0,          -1 },
+    { NULL,					"Godot_Engine",	  NULL,								0,            1,            0,          0,          -1 },
 
 };
 

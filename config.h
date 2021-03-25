@@ -69,7 +69,7 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
+static float mfact     = 0.49; /* factor of master area size [0.05..0.95] */
 static int nmaster     = 1;    /* number of clients in master area */
 static int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 

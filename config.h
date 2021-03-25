@@ -154,6 +154,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
     // { MODKEY|ShiftMask,             XK_BackSpace,	quit,         {0} },
 	{ MODKEY|ShiftMask,             XK_BackSpace,	self_restart,         {0} },
+	{ MODKEY|Mod1Mask,				XK_BackSpace,	quit,				  {0} },
 
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,			killclient,     {0} },
@@ -223,6 +224,8 @@ static Key keys[] = {
 
 	{ 0,                            XK_Print,		spawn,      SHCMD("maimsel") },
 	{ ShiftMask,                    XK_Print,   	spawn,      SHCMD("maimfull") },
+	{ MODKEY,                       XK_Print,		spawn,      SHCMD("dmenurecord") },
+	{ MODKEY|ShiftMask,             XK_Print,   	spawn,      SHCMD("dmenurecord kill") },
 	// { MODKEY,						XK_Scroll_Lock,	spawn,		SHCMD("") },
 	// { MODKEY|ShiftMask,				XK_Scroll_Lock,	spawn,		SHCMD("") },
 	// { MODKEY,						XK_Pause,		spawn,		SHCMD("") },
